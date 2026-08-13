@@ -296,7 +296,7 @@
 
   function loadIndex() {
     if (indexData) return Promise.resolve();
-    return fetch("data/index.json").then(function (r) { return r.json(); }).then(function (d) {
+    return fetch("data/index.json?v=1").then(function (r) { return r.json(); }).then(function (d) {
       indexData = d;
       document.getElementById("stats").innerHTML =
         "<b>" + d.books.length.toLocaleString() + "</b> books";
@@ -304,7 +304,7 @@
   }
   function getPageJson(n) {
     if (!pageCache[n]) {
-      pageCache[n] = fetch("data/p" + n + ".json").then(function (r) { return r.json(); });
+      pageCache[n] = fetch("data/p" + n + ".json?v=1").then(function (r) { return r.json(); });
     }
     return pageCache[n];
   }
