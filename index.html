@@ -363,7 +363,7 @@
         renderBooks(data.results, pageNo, totalPages);
         if (data.results.length === 0) statusLine.textContent = "No books match your search.";
       })
-      .catch(function () { loading = false; statusLine.textContent = "Network error."; });
+      .catch(function (e) { loading = false; statusLine.textContent = "Network error."; console.error("wp_list fetch failed:", e); });
   }
 
   var debounce = null;
@@ -406,7 +406,7 @@
   if (STATIC) {
     loadIndex()
       .then(function () { fetchPage(0); })
-      .catch(function () { statusLine.textContent = "data/index.json missing \u2014 upload the whole build folder."; });
+      .catch(function (e) { statusLine.textContent = "data/index.json missing \u2014 upload the whole build folder."; console.error("wp_list index.json failed:", e); });
   } else {
     fetch("/api/stats").then(function (r) { return r.json(); }).then(function (d) {
       if (!d.error) {

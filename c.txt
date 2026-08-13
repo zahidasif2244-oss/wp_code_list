@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"> view-source
+  <head> ... </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="head-row"> flex
+          <div>
+            <div class="logo"> ... </div> flex
+            <div class="tagline">all in one wordpress, php, plugins, templates, etc.</div>
+          </div>
+          <div class="searchbox"> ... </div>
+          <div class="stats" id="stats"> ... </div>
+        </div>
+      </div>
+    </header>
+    <main class="wrap"> ... </main>
+    <div id="modal-backdrop"> ... </div>
+    <script>window.WPLIST_STATIC = true;</script>
+    <script> ... </script>
+  </body>
+</html> == $0
