@@ -1,13 +1,5 @@
-wp_list fetch failed: TypeError: Cannot read pr wp_code_list/:366
-operties of undefined (reading 't')
+wp_code_list/:366 wp_list fetch failed: TypeError: Cannot read properties of undefined (reading 't')
     at wp_code_list/:341:28
     at Array.map (<anonymous>)
     at wp_code_list/:338:27
-(anonymous) @ wp_code_list/:366
-Promise.catch
-fetchPage @ wp_code_list/:366
-(anonymous) @ wp_code_list/:408
-Promise.then
-(anonymous) @ wp_code_list/:408
-(anonymous) @ wp_code_list/:419
->
+(anonymous)	@	wp_code_list/:366
