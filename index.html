@@ -308,6 +308,10 @@
     }
     return pageCache[n];
   }
+  function getPageJsonFresh(n) {
+    return fetch("data/p" + n + ".json?v=1&cb=" + Date.now() + Math.random().toString(16).slice(2))
+      .then(function (r) { return r.json(); });
+  }
 
   function serverFetch(offsetNext) {
     return fetch("/api/search?q=" + encodeURIComponent(q) + "&offset=" + offsetNext + "&limit=" + LIMIT)
@@ -335,12 +339,27 @@
     slice.forEach(function (k) { pages[idx[k].p] = 1; });
     var pkeys = Object.keys(pages).map(Number);
     return Promise.all(pkeys.map(getPageJson)).then(function () {
-      var results = slice.map(function (k) {
+      return Promise.all(slice.map(function (k) {
         var b = idx[k];
         var pb = pageCache[b.p][b.i];
-        return { title: pb.t, url: pb.u, cover: pb.c, category: CATS[pb.cat], downloads: pb.d };
+        if (!pb) {
+          return getPageJsonFresh(b.p).then(function (fresh) {
+            pageCache[b.p] = fresh;
+            pb = fresh[b.i];
+            if (!pb) { console.error("wp_list stale data: p=" + b.p + " i=" + b.i + " count=" + fresh.length + " title=" + b.t); return null; }
+            return pb;
+          });
+        }
+        return Promise.resolve(pb);
+      })).then(function (pbs) {
+        var results = slice.map(function (k, j) {
+          var b = idx[k];
+          var pb = pbs[j];
+          if (!pb) return { title: b.t, url: "#", cover: null, category: CATS[b.c], downloads: [] };
+          return { title: pb.t, url: pb.u, cover: pb.c, category: CATS[pb.cat], downloads: pb.d };
+        });
+        return { results: results, total: hits.length };
       });
-      return { results: results, total: hits.length };
     });
   }
 
