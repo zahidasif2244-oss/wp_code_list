@@ -227,7 +227,7 @@
     var cover = b.cover
       ? '<img src="' + esc(imgSrc(b.cover)) + '" loading="lazy" alt="' + esc(b.title) + '">'
       : '<div class="ph">&#128366;</div>';
-    var okCount = b.downloads.filter(function (d) { return d.status === "OK"; }).length;
+    var okCount = b.downloads.filter(function (d) { return d.s === "OK"; }).length;
     var totalCount = b.downloads.length;
     var dlLabel = okCount > 0 ? "Download (" + okCount + ")" : (totalCount > 0 ? "Download" : "No links");
     var dlClass = okCount > 0 ? "btn-dl" : "btn-ghost";
@@ -243,7 +243,7 @@
   }
 
   function sortDownloads(dls) {
-    return dls.slice().sort(function (a, b) { return statusOrder[a.status] - statusOrder[b.status]; });
+    return dls.slice().sort(function (a, b) { return statusOrder[a.s] - statusOrder[b.s]; });
   }
 
   function openModal(b) {
@@ -254,13 +254,13 @@
     box.innerHTML = "";
     document.getElementById("modal-empty").classList.toggle("hidden", b.downloads.length > 0);
     sortDownloads(b.downloads).forEach(function (d) {
-      var dead = d.status === "BROKEN";
+      var dead = d.s === "BROKEN";
       var a = document.createElement("a");
       a.className = "mlink" + (dead ? " dead" : "");
       a.href = d.url;
       a.target = "_blank";
       a.rel = "noopener";
-      a.innerHTML = '<span class="badge b-' + d.status + '">' + d.status + "</span>" +
+      a.innerHTML = '<span class="badge b-' + d.s + '">' + d.s + "</span>" +
         '<span class="host">' + esc(hostOf(d.url)) + "</span>" +
         "<span>" + esc(d.url) + "</span>";
       if (dead) {
